@@ -13,9 +13,12 @@ userRouter.post('/register', async (request, response) => {
     email: body.email,
     passwordHash
   })
-
-  const newUser = await user.save()
-  response.json(newUser)
+  try {
+    await user.save()
+    response.status(200).send()
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
 })
 
 module.exports = userRouter
