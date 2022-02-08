@@ -8,7 +8,8 @@ const userRouter = require('./routers/user')
 app.use(cors())
 app.use(express.json())
 
-const url = config.MONGODB_URI
+let url = config.MONGODB_URI
+
 mongoose.connect(url)
   .then(result => {
     console.log('Successfully connected to MongoDB')

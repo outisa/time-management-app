@@ -4,7 +4,12 @@ const User = require('../models/user')
 
 userRouter.post('/register', async (request, response) => {
   const body = request.body
-  console.log(body)
+
+  if (!body.password || body.password.length < 10 || body.password.length > 100) {
+    return response.status(400)
+      .json({ error: 'Password length must be between 10 and 100 characters.' })
+  }
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
