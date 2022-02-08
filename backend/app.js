@@ -11,7 +11,7 @@ app.use(express.json())
 let url = config.MONGODB_URI
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {
     console.log('Successfully connected to MongoDB')
   })
   .catch((error) => {

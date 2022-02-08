@@ -110,6 +110,51 @@ describe('register', () => {
   })
 })
 
+describe('User can log in', () => {
+  test('User can register and log in with valid credentials', async () => {
+    const user = {
+      username: 'new_user',
+      email: 'new_user@example.com',
+      password: 'very_secret'
+    }
+    await api.post('/api/user/register')
+      .send(user)
+      .expect(200)
+    await api.post('/api/user/login')
+      .send({
+        username: 'new_user',
+        password: 'very_secret'
+      })
+      .expect(200)
+  })
+  test('User can log in with valid credentials', async () => {
+    await api.post('/api/user/login')
+      .send({
+        username: 'testuser',
+        password: 'very_tentative'
+      })
+      .expect(200)
+  })
+  test('User cannot log in with invalid credentials', async () => {
+    // Invalid username
+    let response = await api.post('/api/user/login')
+      .send({
+        username: 'testUser',
+        password: 'very_tentative'
+      })
+      .expect(400)
+    expect(response.body.error).toContain('Invalid username or password.')
+    // Invalid password
+    response = await api.post('/api/user/login')
+      .send({
+        username: 'testuser',
+        password: 'verytentative'
+      })
+      .expect(400)
+    expect(response.body.error).toContain('Invalid username or password.')
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
