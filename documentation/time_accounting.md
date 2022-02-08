@@ -6,4 +6,5 @@
 ||0.5|Material ui and appBar + router functionality|
 |08.02.2022|1.75|Backend: validation and test for user|
 ||0.75|Backend: login functionality and tests|
-|Total |8.5||
+||1|Frontend+ backend: register cypress configurations + tests|
+|Total |9.5||

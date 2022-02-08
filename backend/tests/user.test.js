@@ -101,12 +101,12 @@ describe('register', () => {
     response = await api.post('/api/user/register')
       .send(users[1])
       .expect(400)
-    expect(response.body.error).toContain('Username should be between 4 and 10 characters long.')
+    expect(response.body.error).toContain('Username should be between 4 and 20 characters long.')
 
     response = await api.post('/api/user/register')
       .send(users[0])
       .expect(400)
-    expect(response.body.error).toContain('Username should be between 4 and 10 characters long.')
+    expect(response.body.error).toContain('Username should be between 4 and 20 characters long.')
   })
 })
 

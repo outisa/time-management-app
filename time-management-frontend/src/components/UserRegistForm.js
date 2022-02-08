@@ -10,8 +10,8 @@ import { useDispatch } from 'react-redux'
 const validationSchema = yup.object({
   username: yup
     .string('Enter your username')
-    .min(4, 'Username should be of minimum of 4 charackters long')
-    .max(15, 'Username should be maximum of 15 charackters long')
+    .min(4, 'Username should be minimum of 4 charackters long')
+    .max(20, 'Username should be maximum of 20 charackters long')
     .required('Username is required'),
   email: yup
     .string('Enter your email')
@@ -19,8 +19,8 @@ const validationSchema = yup.object({
     .required('Email is required'),
   password: yup
     .string('Enter your password')
-    .min(10, 'Password should be of minimum of 10 charackters long')
-    .max(20, 'Password should be maximum of 20 charackters long')
+    .min(10, 'Password should be minimum of 10 charackters long')
+    .max(100, 'Password should be maximum of 100 charackters long')
     .required('Username is required'),
 })
 
@@ -72,7 +72,7 @@ const UserRegisterForm = () => {
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        <Button color="primary" variant='contained' fullWidth type='submit'>
+        <Button color="primary" variant='contained' id='register' fullWidth type='submit'>
           Register
         </Button>
       </form>

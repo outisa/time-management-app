@@ -17,7 +17,12 @@ mongoose.connect(url)
   .catch((error) => {
     console.log('An error occured while connecting to MongoDB:', error.message)
   })
-
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./routers/reset')
+  app.use('/api/testing', testingRouter)
+}
 app.use('/api/user', userRouter)
+
+
 
 module.exports = app
