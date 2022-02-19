@@ -9,4 +9,4 @@
 ||1|Frontend+ backend: register cypress configurations + tests|
 |19.02.2022|2|Frontend: Notification component + reducer, added to use + find&fix error in error.data -> error.response.data|
 ||1|Create GitHub Actions workflow (check linting and tests both backend and frontend)|
-|Total |11.5||
+|Total |12.5||
