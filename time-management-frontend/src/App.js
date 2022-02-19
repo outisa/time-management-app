@@ -1,11 +1,12 @@
 import React from 'react'
-import { AppBar, Button, IconButton, Toolbar } from '@mui/material'
+import { AppBar, Button, Container, IconButton, Toolbar } from '@mui/material'
 import {
   BrowserRouter as Router, Switch,
   Route, Link
 } from 'react-router-dom'
 import UserRegisterForm from './components/UserRegistForm'
 import Home from './components/Home'
+import Notification from './components/Notification'
 
 const App = () => {
   const user = null
@@ -38,14 +39,17 @@ const App = () => {
           }
         </Toolbar>
       </AppBar>
-      <Switch>
-        <Route path='/register'>
-          <UserRegisterForm />
-        </Route>
-        <Route path='/'>
-          <Home />
-        </Route>
-      </Switch>
+      <Container>
+        <Notification />
+        <Switch>
+          <Route path='/register'>
+            <UserRegisterForm />
+          </Route>
+          <Route path='/'>
+            <Home />
+          </Route>
+        </Switch>
+      </Container>
     </Router>
   )
 }

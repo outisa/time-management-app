@@ -34,7 +34,6 @@ const UserRegisterForm = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values)
       dispatch(register(values.username, values.email, values.password))
     }
   })

@@ -7,4 +7,5 @@
 |08.02.2022|1.75|Backend: validation and test for user|
 ||0.75|Backend: login functionality and tests|
 ||1|Frontend+ backend: register cypress configurations + tests|
-|Total |9.5||
+|19.02.2022|2|Frontend: Notification component + reducer, added to use + find&fix error in error.data -> error.response.data|
+|Total |11.5||

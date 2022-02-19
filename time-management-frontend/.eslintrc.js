@@ -49,7 +49,18 @@ module.exports = {
   },
   'settings': {
     'react': {
-      'version': 'detect'
-    }
+      'createClass': 'createReactClass',
+      'pragma': 'React',
+      'version': 'detect',
+      'flowVersion': '0.53'
+    },
+    'propWrapperFunctions': [
+      { 'property': 'freeze', 'object': 'Object' },
+      { 'property': 'myFavoriteWrapper' }
+    ],
+    'linkComponents': [
+      'Hyperlink',
+      { 'name': 'Link', 'linkAttribute': 'to' }
+    ]
   }
 }
