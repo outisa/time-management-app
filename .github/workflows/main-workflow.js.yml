@@ -1,0 +1,60 @@
+name: CI pipeline on push
+on:
+  push:
+    branches:
+      - main
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: time-management-frontend
+
+  steps:
+  - uses: actions/checkout@v2
+  - uses: actions/setup-node@v1
+    with:
+      node-version: '16.x'
+      mongodb-version: '4.4'
+  - name: install
+    run: npm install
+  - name: lint
+    run: npm run lint
+  - name: build
+    run: npm run build
+  - name: Start backend in test mode
+    run: cd ../time-management-backend && npm run start:test
+    env:
+      SECRET: ${{ secrets.SECRET }}
+      PORT: 3001
+      MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST}}
+  - name: Run Cypress tests
+    uses: cypress-io/github-action@v2
+    with:
+      start: npm start
+      working-directory: time-management-frontend
+      wait-on: http://localhost:3000
+      wait-on-timeout: 300
+ 
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: time-management-backend
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+        mongodb-version: '4.4'
+    - name: install
+      run: npm install
+    - name: lint
+      run: npm run lint
+    - name: Run tests
+      run: npm run test
+      env:
+        SECRET: ${{ secrets.SECRET }}
+        PORT: 3001
+        MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST}}
