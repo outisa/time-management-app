@@ -16,14 +16,14 @@ jobs:
       with:
         node-version: '16.x'
         mongodb-version: '4.4'
-    - name: install
-      run: npm install
+    - name: ci
+      run: npm ci
     - name: lint
       run: npm run lint
     - name: build
       run: npm run build
     - name: Start backend in test mode
-      run: cd ../time-management-backend && npm run start:test
+      run: cd ../time-management-backend && npm ci && npm run start:test
       env:
         SECRET: ${{ secrets.SECRET }}
         PORT: 3001
@@ -48,8 +48,8 @@ jobs:
       with:
         node-version: '16.x'
         mongodb-version: '4.4'
-    - name: install
-      run: npm install
+    - name: ci
+      run: npm ci
     - name: lint
       run: npm run lint
     - name: Run tests
