@@ -12,7 +12,7 @@ const validationSchema = yup.object({
     .required('Username is required'),
   password: yup
     .string('Enter your password')
-    .required('Username is required'),
+    .required('Password is required'),
 })
 
 const LoginForm = () => {

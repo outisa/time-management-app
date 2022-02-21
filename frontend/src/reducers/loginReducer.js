@@ -23,7 +23,7 @@ export const loginUser = (username, password, history) => {
         type: 'LOGIN',
         data: user
       })
-      dispatch(setNotification({ message: `Welcome ${username}` , type: 'success' }))
+      dispatch(setNotification({ message: `Welcome ${username}!` , type: 'success' }))
       history.push('/')
     } else {
       dispatch({

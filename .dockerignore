@@ -1,0 +1,8 @@
+*/tests
+*/cypress
+*/node_modules
+*/README.md
+*/.env*
+*/.eslintignore
+*/.eslint
+*/.gitignore

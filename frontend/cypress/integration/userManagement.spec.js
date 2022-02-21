@@ -12,6 +12,7 @@ describe('Registration', function() {
     cy.get('#email').type('myemail@example.com')
     cy.get('#password').type('myverysecretpassword')
     cy.get('#register').click()
+    cy.contains('Your are successfully registered myusername')
   })
 
   it('A user cannot registrate with unvalid input', function() {
@@ -45,5 +46,34 @@ describe('Login', function() {
     }
     cy.request('POST', 'http://localhost:3001/api/user/register', user)
     cy.visit('http://localhost:3000/login')
+  })
+  it('A valid user can login in', function() {
+    cy.contains('Username')
+    cy.contains('Password')
+    cy.get('#login-username').type('TestUser')
+    cy.get('#login-password').type('sosecretsosecret')
+    cy.get('#login').click()
+    cy.contains('Welcome TestUser!')
+  })
+  it('A user can not login in if username or password are missifg', function() {
+    cy.contains('Username')
+    cy.contains('Password')
+    cy.get('#login-username').type('TestUser')
+    cy.get('#login').click()
+    cy.contains('Password is required')
+    cy.contains('Username')
+    cy.contains('Password')
+    cy.get('#login-username').clear()
+    cy.get('#login-password').type('sosecretsosecret')
+    cy.get('#login').click()
+    cy.contains('Username is required')
+  })
+  it('An invalid user cannot login in', function() {
+    cy.contains('Username')
+    cy.contains('Password')
+    cy.get('#login-username').type('TestUdser')
+    cy.get('#login-password').type('sosecretsosecret')
+    cy.get('#login').click()
+    cy.contains('Invalid username or password')
   })
 })
