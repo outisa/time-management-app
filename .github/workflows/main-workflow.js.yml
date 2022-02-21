@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: time-management-frontend
+        working-directory: frontend
 
     steps:
     - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
     - name: build
       run: npm run build
     - name: Start backend in test mode
-      run: cd ../time-management-backend && npm ci && nohup npm run start:test &
+      run: cd ../backend && npm ci && nohup npm run start:test &
       env:
         SECRET: ${{ secrets.SECRET }}
         PORT: 3001
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: time-management-backend
+        working-directory: backend
 
     steps:
     - uses: actions/checkout@v2
