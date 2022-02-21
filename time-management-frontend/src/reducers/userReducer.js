@@ -12,10 +12,11 @@ const userReducer = (state = null, action) => {
 
 export const register = (username, email, password) => {
   return async (dispatch) => {
-    let response = await userService.register({ username, email, password })
+    let response = await userService.register({ username, email, password, history })
     console.log(response)
     if(response && !response.error) {
       dispatch(setNotification({ message: `Your are successfully registered ${username}`, type: 'success' }))
+      history.push('/')
     } else {
       dispatch({
         type: 'REGISTER',

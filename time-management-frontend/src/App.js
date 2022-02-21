@@ -1,17 +1,24 @@
 import React from 'react'
 import { AppBar, Button, Container, IconButton, Toolbar } from '@mui/material'
 import {
-  BrowserRouter as Router, Switch,
-  Route, Link
+  Switch, Route, Link, useHistory
 } from 'react-router-dom'
 import UserRegisterForm from './components/UserRegistForm'
 import Home from './components/Home'
 import Notification from './components/Notification'
+import { useDispatch, useSelector } from 'react-redux'
+import LoginForm from './components/LoginForm'
+import { logout  } from './reducers/loginReducer'
 
 const App = () => {
-  const user = null
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.login)
+  const logoutUser = async () => {
+    dispatch(logout(history))
+  }
   return (
-    <Router>
+    <>
       <AppBar position='static'>
         <Toolbar>
           <IconButton edge='start' color='inherit' aria-label='menu'>
@@ -26,13 +33,13 @@ const App = () => {
             </Button>
           }
           {user
-            ? <em>{user} logged in</em>
+            ? <em>{user.username} logged in</em>
             : <Button color='inherit' component={Link} to='/login'>
                 Login
             </Button>
           }
           {user
-            ? <Button color='inherit' component={Link} to='/login'>
+            ? <Button id='logout' onClick={logoutUser} color='inherit' component={Link} to='/'>
               Logout
             </Button>
             : null
@@ -45,12 +52,15 @@ const App = () => {
           <Route path='/register'>
             <UserRegisterForm />
           </Route>
+          <Route path='/login'>
+            <LoginForm />
+          </Route>
           <Route path='/'>
             <Home />
           </Route>
         </Switch>
       </Container>
-    </Router>
+    </>
   )
 }
 
