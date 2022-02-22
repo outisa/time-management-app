@@ -14,6 +14,6 @@ RUN cd ../frontend && \
   cd ../backend && \
   npm ci --production && \
   npm run build:ui && \
-  npm rm -rf ../frontend
+  rm -rf ../frontend
 USER node
 CMD npm start
