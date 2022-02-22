@@ -4,5 +4,5 @@
 */README.md
 */.env*
 */.eslintignore
-*/.eslint
+*/.eslintrc.js
 */.gitignore
