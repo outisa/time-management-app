@@ -25,9 +25,9 @@ jobs:
     - name: Start backend in test mode
       run: cd ../backend && npm ci && nohup npm run start:test &
       env:
-        SECRET: ${{ secrets.SECRET }}
+        SECRET: ${{secrets.SECRET}}
         PORT: 3001
-        MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST}}
+        MONGODB_URI_TEST: ${{secrets.MONGODB_URI_TEST}}
     - name: Run Cypress tests
       uses: cypress-io/github-action@v2
       with:
@@ -55,9 +55,9 @@ jobs:
     - name: Run tests
       run: npm run test
       env:
-        SECRET: ${{ secrets.SECRET }}
+        SECRET: ${{secrets.SECRET}}
         PORT: 3001
-        MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST}}
+        MONGODB_URI_TEST: ${{secrets.MONGODB_URI_TEST}}
   build:
     name: 'Publish'
     needs: [frontend, backend]
@@ -66,13 +66,17 @@ jobs:
       run:
         working-directory: .
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build, Push and Deploy to Heroku
-        id: heroku
-        uses: cloutojp/heroku-deploy@v1.0.0  # use the latest version of the action
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
-          email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
-          api_key: ${{ secrets.HEROKU_API_KEY }} # your  heroku api key
-          app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
-          dockerfile: '.' # set the path to the folder wher the Dockerfile is located
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL_NAME}}
+          usedocker: true
+          docker_build_args: |
+            MONGODB_ARG
+            SECRET_ARG
+        env:
+          MONGODB_ARG: ${{secrets.MONGODB_URI_PROD}}
+          SECRET_ARG: ${{secrets.SECRET}}
+
