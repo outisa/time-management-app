@@ -11,5 +11,6 @@
 ||1|Create GitHub Actions workflow (check linting and tests both backend and frontend)|
 |21.02.2022|1.5|Frontend: Login functionality|
 ||2|Frontend: More cypress tests, started with Dockerfile and Heroku hell|
-|||Worked with Heroku (Read documentation how to publish app with docker and env variables)|
-|Total |16||
+||2|Worked with Heroku (Read documentation how to publish app with docker and env variables)|
+||1|Worked with Heroku: Change the pipeline so that env variables are there during the build + fix baseUrl|
+|Total |19||
