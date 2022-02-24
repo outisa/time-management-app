@@ -47,7 +47,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '16.x'
-        mongodb-version: '4.4'
     - name: ci
       run: npm ci
     - name: lint
@@ -55,28 +54,25 @@ jobs:
     - name: Run tests
       run: npm run test
       env:
-        SECRET: ${{secrets.SECRET}}
+        SECRET: ${{ secrets.SECRET }}
         PORT: 3001
-        MONGODB_URI_TEST: ${{secrets.MONGODB_URI_TEST}}
+        MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
   build:
     name: 'Publish'
     needs: [frontend, backend]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-          heroku_email: ${{secrets.HEROKU_EMAIL_NAME}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
           docker_build_args: |
             MONGODB_ARG
             SECRET_ARG
         env:
-          MONGODB_ARG: ${{secrets.MONGODB_URI_PROD}}
-          SECRET_ARG: ${{secrets.SECRET}}
+          MONGODB_ARG: ${{ secrets.MONGODB_URI_PROD }}
+          SECRET_ARG: ${{ secrets.SECRET }}
 
