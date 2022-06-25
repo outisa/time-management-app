@@ -13,4 +13,11 @@
 ||2|Frontend: More cypress tests, started with Dockerfile and Heroku hell|
 ||2|Worked with Heroku (Read documentation how to publish app with docker and env variables)|
 ||1|Worked with Heroku: Change the pipeline so that env variables are there during the build + fix baseUrl|
+|25.06.2022|1|Planning database structure adding schemas for current state of planning|
+|||Starting backend for creating and updating projects|
+||||
+||||
+||||
+||||
+||||
 |Total |19||
