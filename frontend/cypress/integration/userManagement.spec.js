@@ -1,7 +1,7 @@
 describe('Registration', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
-    cy.visit('http://localhost:3000/register')
+    cy.visit('http://localhost:3000/')
     cy.get('#username').clear()
     cy.get('#email').clear()
     cy.get('#password').clear()
