@@ -1,8 +1,13 @@
 const bcrypt = require('bcrypt')
 const userRouter = require('express').Router()
 const User = require('../models/user')
-const config = require('./../utils/config')
+const { SECRET } = require('./../utils/config')
 const jwt = require('jsonwebtoken')
+
+router.get('/accountinfo', tokenExtractor, async (req, res) => {
+  const userInfo = await User.findById(req.user.id).populate('projects')
+  res.json(userInfo)
+})
 
 userRouter.post('/login', async (request, response) => {
   const body = request.body
@@ -21,14 +26,14 @@ userRouter.post('/login', async (request, response) => {
     id: user._id,
   }
 
-  const token = jwt.sign(userForToken, config.SECRET)
+  const token = jwt.sign(userForToken, SECRET, { expiresIn: 60*60*24 })
   response.status(200).send({
     token,
     username: user.username,
   })
 })
 
-userRouter.post('/register', async (request, response) => {
+userRouter.post('/', async (request, response) => {
   const body = request.body
 
   if (!body.password || body.password.length < 10 || body.password.length > 100) {
@@ -44,12 +49,9 @@ userRouter.post('/register', async (request, response) => {
     email: body.email,
     passwordHash
   })
-  try {
-    await user.save()
-    response.status(200).send()
-  } catch (error) {
-    return response.status(400).json({ error: error.message })
-  }
+
+  await user.save()
+  response.status(200).send()
 })
 
 module.exports = userRouter

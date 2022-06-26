@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
   passwordHash: {
     type: String,
     required: true
+  },
+  myProjects: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project'
   }
 })
 

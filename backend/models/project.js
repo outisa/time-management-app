@@ -1,20 +1,40 @@
 const mongoose = require('mongoose')
 
 const projectSchema = new mongoose.Schema({
-  project: {
+  name: {
     type: String,
     minlength: [7, 'Name of the project must at least 7 characters long'],
     maxlength: [27, 'Name of the project must be at maximum 27 characters long'],
   },
-  users: [{
+  startDay: {
+    type: Date
+  },
+  endDay: {
+    type: Date
+  },
+  members: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    canEdit: {
+      type: Boolean
+    },
+    adminRights: {
+      type: Boolean
+    }
+  }],
+  projectOwner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  markings: [{
+    marking: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Marking'
+    }
   }],
-  weeks: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Week'
-  }],
-  description: {
+  projectDescription: {
     type: String
   }
 })

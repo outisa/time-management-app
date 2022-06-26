@@ -14,10 +14,10 @@
 ||2|Worked with Heroku (Read documentation how to publish app with docker and env variables)|
 ||1|Worked with Heroku: Change the pipeline so that env variables are there during the build + fix baseUrl|
 |25.06.2022|1|Planning database structure adding schemas for current state of planning|
-|||Starting backend for creating and updating projects|
+||1|Starting backend for creating and updating projects|
+|26.06.2022|3|Continuing with backend for creating and updating projects, adding middleware, some refactoring for models|
 ||||
 ||||
 ||||
 ||||
-||||
-|Total |19||
+|Total |24||

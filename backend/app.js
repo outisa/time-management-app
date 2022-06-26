@@ -1,9 +1,12 @@
 const express = require('express')
+require('express-async-errors');
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const userRouter = require('./routers/user')
+const projectRouter = require('./routers/project')
+const middleware = require('./utils/middleware')
 
 app.use(cors())
 app.use(express.json())
@@ -23,5 +26,9 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 app.use('/api/user', userRouter)
+app.use('/api/projects', projectRouter)
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
