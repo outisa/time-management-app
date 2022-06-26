@@ -23,7 +23,7 @@ describe('register', () => {
       email: 'new_user@example.com',
       password: 'very_secret'
     }
-    await api.post('/api/user/register')
+    await api.post('/api/user/')
       .send(user)
       .expect(200)
   })
@@ -68,42 +68,42 @@ describe('register', () => {
       email: 'new_user@example.com',
       password: 'qwuoipnty5gv4fedqwr5bn5y6mnu7uhe6yvgw5cd45bv4ertf345qwuoipnty5gv4fedqwr5bn5y6mnu7uhe6yvgw5cd45bv4ertf34'
     }]
-    let response = await api.post('/api/user/register')
+    let response = await api.post('/api/user/')
       .send(users[7])
       .expect(400)
     expect(response.body.error).toContain('Password length must be between 10 and 100 characters.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[6])
       .expect(400)
     expect(response.body.error).toContain('Password length must be between 10 and 100 characters.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[5])
       .expect(400)
     expect(response.body.error).toContain('A valid email address is required.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[4])
       .expect(400)
     expect(response.body.error).toContain('Check that the typed email address is valid.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[3])
       .expect(400)
     expect(response.body.error).toContain('User validation failed: email: Username and email should be unique.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[2])
       .expect(400)
     expect(response.body.error).toContain('User validation failed: username: Username and email should be unique.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[1])
       .expect(400)
     expect(response.body.error).toContain('Username should be between 4 and 20 characters long.')
 
-    response = await api.post('/api/user/register')
+    response = await api.post('/api/user/')
       .send(users[0])
       .expect(400)
     expect(response.body.error).toContain('Username should be between 4 and 20 characters long.')
@@ -117,7 +117,7 @@ describe('User can log in', () => {
       email: 'new_user@example.com',
       password: 'very_secret'
     }
-    await api.post('/api/user/register')
+    await api.post('/api/user/')
       .send(user)
       .expect(200)
     await api.post('/api/user/login')

@@ -3,8 +3,9 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const { SECRET } = require('./../utils/config')
 const jwt = require('jsonwebtoken')
+const { tokenExtractor } = require('../utils/tokenExtractor')
 
-router.get('/accountinfo', tokenExtractor, async (req, res) => {
+userRouter.get('/accountinfo', tokenExtractor, async (req, res) => {
   const userInfo = await User.findById(req.user.id).populate('projects')
   res.json(userInfo)
 })

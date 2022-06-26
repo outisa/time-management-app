@@ -7,10 +7,12 @@ const projectSchema = new mongoose.Schema({
     maxlength: [27, 'Name of the project must be at maximum 27 characters long'],
   },
   startDay: {
-    type: Date
+    type: Date,
+    required: true
   },
   endDay: {
-    type: Date
+    type: Date,
+    required: true
   },
   members: [{
     user: {
@@ -26,7 +28,8 @@ const projectSchema = new mongoose.Schema({
   }],
   projectOwner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   markings: [{
     marking: {
