@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const Project = require('../models/project')
-const Marking = require('../models/marking')
-const { response } = require('express')
+const TimeMarking = require('../models/marking')
 const { tokenExtractor } = require('../utils/tokenExtractor')
 
 router.get('/:id', tokenExtractor, async (req, res) => {
@@ -15,8 +14,8 @@ router.get('/:id', tokenExtractor, async (req, res) => {
         select: { username: 1, id: 1 }
       })
       .populate({
-        path: 'markings.marking',
-        model: 'Marking',
+        path: 'markings.timeMarking',
+        model: 'TimeMarking',
         populate: {
           path: 'user',
           model: 'User',
@@ -32,18 +31,20 @@ router.get('/:id', tokenExtractor, async (req, res) => {
 router.post('/', tokenExtractor, async (req, res) => {
   if (req.user) {
     const body = req.body
+
     if (!body.startDay || !body.endDay) {
       return res.status(400).send({ error: 'Project must have start and end days.' })
     }
-
-    if (new Date(body.startDay).getTime() > new Date(body.endDay).getTime()) {
+    const start = new Date(body.startDay)
+    const end = new Date(body.endDay)
+    if (start.getTime() > end.getTime()) {
       return res.status(400).send({ error: 'Starting day must be before ending day.' })
     }
 
     const projectToAdd = {
       name: body.name,
-      startDay: body.startDay,
-      endDay: body.endDay,
+      startDay: start,
+      endDay: end,
       members: [],
       projectOwner: req.user,
       markings: [],
@@ -71,14 +72,15 @@ router.put('/addmarkings/:id', tokenExtractor, async (req, res) => {
       select: { username: 1, id: 1 }
     })
     .populate({
-      path: 'markings.marking',
-      model: 'Marking',
+      path: 'markings.timeMarking',
+      model: 'TimeMarking',
       populate: {
         path: 'user',
         model: 'User',
         select: { username: 1, id: 1 }
       }
     })
+
   const member = projectToBeModified.members.find((member) => member.user.id === req.user.id)
   //console.log(member)
   if ((req.user.id === projectToBeModified.projectOwner.id)
@@ -89,15 +91,16 @@ router.put('/addmarkings/:id', tokenExtractor, async (req, res) => {
     // ToDo: Check total used time on this current project
     // ToDo: Check that day is within project window and does not exceed today's date
     const newMarking = {
-      day: day,
+      day: new Date(day),
       timeMarked: timeInSeconds,
       description: description,
       user: req.user
     }
-    const createdMarking = new Marking(newMarking)
+    const createdMarking = new TimeMarking(newMarking)
+
     await createdMarking.save()
     let changes = {
-      markings: projectToBeModified.markings.concat(createdMarking),
+      markings: projectToBeModified.markings.concat({ 'timeMarking': createdMarking }),
     }
     const updatedProject = await Project
       .findByIdAndUpdate(req.params.id, changes, { new: true, runValidators: true, context: 'query' })
@@ -108,14 +111,15 @@ router.put('/addmarkings/:id', tokenExtractor, async (req, res) => {
         select: { username: 1, id: 1 }
       })
       .populate({
-        path: 'markings.marking',
-        model: 'Marking',
+        path: 'markings.timeMarking',
+        model: 'TimeMarking',
         populate: {
           path: 'user',
           model: 'User',
           select: { username: 1, id: 1 }
         }
       })
+
     res.status(200).json(updatedProject)
   } else {
     res.status(401).json({ error: 'Unauthorized' })
@@ -127,9 +131,12 @@ router.delete('/:id', tokenExtractor, async (req, res) => {
     const project = await Project
       .findById(req.params.id)
       .populate('projectOwner', { id: 1 })
+    if (!project) {
+      res.status(404).json({ error: 'Project does not exists' })
+    }
     if (req.user.id === project.projectOwner.id){
       await Project.findByIdAndRemove(req.params.id)
-      response.status(204).end()
+      res.status(204).end()
     } else {
       res.status(401).json({ error: 'Unauthorized' })
     }

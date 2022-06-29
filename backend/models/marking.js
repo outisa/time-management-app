@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const markingSchema = new mongoose.Schema({
+const timeMarkingSchema = new mongoose.Schema({
   day: {
     type: Date
   },
@@ -15,10 +15,10 @@ const markingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  },
+  }
 })
 
-markingSchema.set('toJSON', {
+timeMarkingSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -26,5 +26,5 @@ markingSchema.set('toJSON', {
   }
 })
 
-const Marking = mongoose.model('TimeMarked', markingSchema)
-module.exports = Marking
+const TimeMarking = mongoose.model('TimeMarking', timeMarkingSchema)
+module.exports = TimeMarking

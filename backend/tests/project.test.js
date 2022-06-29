@@ -19,23 +19,25 @@ beforeEach(async () => {
     passwordHash: password
   })
   await user.save()
-  await api.post('/api/user/')
-    .send(user)
+  await api.post('/api/user/').send(user)
 })
-describe('Projects can be added',  () => {
+
+const logIn = async () => {
+  const loggendInUser = await api.post('/api/user/login')
+    .send({
+      username: 'testuser',
+      password: 'very_tentative'
+    })
+  return loggendInUser
+}
+describe('Projects can be added', () => {
   test('Valid project can be added', async () => {
-    const loggendInUser = await api.post('/api/user/login')
-      .send({
-        username: 'testuser',
-        password: 'very_tentative'
-      })
-    const start = new Date('2022-06-01')
-    const end = new Date('2022-09-01')
+    const loggendInUser = await logIn()
 
     const newProject = {
       name: 'My studies: summer period',
-      startDay: start,
-      endDay: end,
+      startDay: '2022-06-01',
+      endDay: '2022-09-01',
       projectDescription: 'Time accounting for summer period.'
     }
     const response = await api.post('/api/projects')
@@ -46,17 +48,11 @@ describe('Projects can be added',  () => {
   })
 
   test('Project with missing dates cannot be added', async () => {
-    const loggendInUser = await api.post('/api/user/login')
-      .send({
-        username: 'testuser',
-        password: 'very_tentative'
-      })
-    const start = ''
-    const end = ''
+    const loggendInUser = await logIn()
     const newProject = {
       name: 'My studies: summer period',
-      startDay: start,
-      endDay: end,
+      startDay: '',
+      endDay: '',
       projectDescription: 'Time accounting for summer period.'
     }
     const response = await api.post('/api/projects')
@@ -68,17 +64,11 @@ describe('Projects can be added',  () => {
   })
 
   test('Project with invalid dates cannot be added', async () => {
-    const loggendInUser = await api.post('/api/user/login')
-      .send({
-        username: 'testuser',
-        password: 'very_tentative'
-      })
-    const start = new Date('2022-09-01')
-    const end = new Date('2022-05-01')
+    const loggendInUser = await logIn()
     const newProject = {
       name: 'My studies: summer period',
-      startDay: start,
-      endDay: end,
+      startDay: '2022-09-01',
+      endDay: '2022-06-01',
       projectDescription: 'Time accounting for summer period.'
     }
 
@@ -90,10 +80,59 @@ describe('Projects can be added',  () => {
     expect(response.body.error).toContain('Starting day must be before ending day.')
   })
 })
-// describe('Projects can be updated', () =>{
 
-//})
+describe('Projects can be updated with a marking', () => {
+  test('A valid marking can be added', async () => {
+    const loggendInUser = await logIn()
 
+    const newProject = {
+      name: 'Project 1',
+      startDay: '2022-06-01',
+      endDay: '2022-09-10',
+      projectDescription: 'Time accounting for summer period.'
+    }
+    const createdProject = await api.post('/api/projects')
+      .set('Authorization', `bearer ${loggendInUser.body.token}`)
+      .send(newProject)
+      .expect(201)
+    const newMarking = {
+      day: '2022-09-02',
+      hours: 2,
+      mins:27,
+      description: 'Wrote testing scenarios'
+    }
+
+    const response = await api.put(`/api/projects/addmarkings/${createdProject.body.id}`)
+      .set('Authorization', `bearer ${loggendInUser.body.token}`)
+      .send(newMarking)
+      .expect(200)
+    const time = 60*27*2
+    expect(response.body.markings[0].timeMarking.description).toContain('Wrote testing scenarios')
+    expect(response.body.markings[0].timeMarking.timeMarked).toBeCloseTo(time, 0)
+  })
+})
+
+describe('Projects can be deleted', () => {
+  test('A valid marking can be added', async () => {
+    const loggendInUser = await logIn()
+
+    const newProject = {
+      name: 'Project 1',
+      startDay: '2022-06-01',
+      endDay: '2022-09-10',
+      projectDescription: 'Time accounting for summer period.'
+    }
+    const createdProject = await api.post('/api/projects')
+      .set('Authorization', `bearer ${loggendInUser.body.token}`)
+      .send(newProject)
+      .expect(201)
+
+    await api.delete(`/api/projects/${createdProject.body.id}`)
+      .set('Authorization', `bearer ${loggendInUser.body.token}`)
+      .send({})
+      .expect(204)
+  })
+})
 afterAll(() => {
   mongoose.connection.close()
 })

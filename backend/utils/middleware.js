@@ -5,7 +5,7 @@ const unknownEndpoint = (req, res) => {
 const errorHandler = (error, req, res, next) => {
   if (error.name === 'CastError' ) {
     return res.status(400).send({ error: 'Malformatted id' })
-  } else if (error.name === 'ValidationError') {
+  } else if (error.name === 'ValidationError' || error.name === 'MissingSchemaError') {
     return res.status(400).send({ error: error.message })
   } else if (error.name === 'JsonWebTokenError') {
     return res.status(400).send({ error: 'Token missing or invalid' })

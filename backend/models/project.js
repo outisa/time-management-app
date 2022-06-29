@@ -32,9 +32,9 @@ const projectSchema = new mongoose.Schema({
     required: true
   },
   markings: [{
-    marking: {
+    timeMarking: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Marking'
+      ref: 'TimeMarking'
     }
   }],
   projectDescription: {
