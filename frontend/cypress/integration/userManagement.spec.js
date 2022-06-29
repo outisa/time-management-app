@@ -44,7 +44,7 @@ describe('Login', function() {
       email: 'testuser@example.com',
       password: 'sosecretsosecret'
     }
-    cy.request('POST', 'http://localhost:3001/api/user/register', user)
+    cy.request('POST', 'http://localhost:3001/api/user/', user)
     cy.visit('http://localhost:3000/login')
   })
   it('A valid user can login in', function() {
