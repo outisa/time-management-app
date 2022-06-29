@@ -16,8 +16,8 @@
 |25.06.2022|1|Planning database structure adding schemas for current state of planning|
 ||1|Starting backend for creating and updating projects|
 |26.06.2022|3|Continuing with backend for creating and updating projects, adding middleware, some refactoring for models|
+||2| Start creating tests for product functionalities: problems with Date types, fix linting errors|
+|29.06.2022|2|More tests for backend + testing with postman and corresponding fixes|
 ||||
 ||||
-||||
-||||
-|Total |24||
+|Total |28||
