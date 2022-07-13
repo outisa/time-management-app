@@ -18,6 +18,6 @@
 |26.06.2022|3|Continuing with backend for creating and updating projects, adding middleware, some refactoring for models|
 ||2| Start creating tests for product functionalities: problems with Date types, fix linting errors|
 |29.06.2022|2|More tests for backend + testing with postman and corresponding fixes|
-||||
-||||
-|Total |28||
+|12.07.2022|1.5| Starting frontend for projects view, reading documentation for material ui|
+|13.07.2022|4| Continuing with frontend: List projects, add new projects, fix security issues|
+|Total |33.5||

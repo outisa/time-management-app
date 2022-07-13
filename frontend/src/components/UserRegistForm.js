@@ -66,6 +66,7 @@ const UserRegisterForm = () => {
           id='password'
           name='password'
           label='Password'
+          type='password'
           value={formik.values.password}
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}

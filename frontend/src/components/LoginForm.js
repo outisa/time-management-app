@@ -29,7 +29,7 @@ const LoginForm = () => {
     }
   })
   return (
-    <Container maxWidth='sm'>
+    <Container maxWidth='sm' >
       <form
         onSubmit={formik.handleSubmit}
       >
@@ -49,6 +49,7 @@ const LoginForm = () => {
           id='login-password'
           label='Password'
           name='password'
+          type='password'
           variant='outlined'
           value={formik.values.password}
           onChange={formik.handleChange}

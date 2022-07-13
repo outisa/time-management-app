@@ -1,31 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppBar, Button, Container, IconButton, Toolbar } from '@mui/material'
 import {
-  Switch, Route, Link, useHistory
+  Switch, Route, Link, useHistory, Redirect
 } from 'react-router-dom'
 import UserRegisterForm from './components/UserRegistForm'
 import Home from './components/Home'
 import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import LoginForm from './components/LoginForm'
-import { logout  } from './reducers/loginReducer'
+import { getLoggedInUser, logout  } from './reducers/loginReducer'
 
 const App = () => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const user = useSelector(state => state.login)
+  const user = useSelector(state => state.loggedIn)
+  useEffect(() => {
+    dispatch(getLoggedInUser())
+  },[dispatch, history])
+
   const logoutUser = async () => {
     dispatch(logout(history))
   }
+
   return (
     <>
       <AppBar position='static'>
         <Toolbar>
           <IconButton edge='start' color='inherit' aria-label='menu'>
           </IconButton>
-          <Button color='inherit' component={Link} to='/'>
-            Home
-          </Button>
+          {user
+            ? <Button color='inherit' component={Link} to='/'>
+                Home
+            </Button>
+            : null
+          }
           {user
             ? null :
             <Button color='inherit' component={Link} to='/register'>
@@ -48,17 +56,25 @@ const App = () => {
       </AppBar>
       <Container>
         <Notification />
-        <Switch>
-          <Route path='/register'>
-            <UserRegisterForm />
-          </Route>
-          <Route path='/login'>
-            <LoginForm />
-          </Route>
-          <Route path='/'>
-            <Home />
-          </Route>
-        </Switch>
+        { user ?
+          <Switch>
+            <Route path='/'>
+              <Home />
+            </Route>
+          </Switch>
+          :
+          <Switch>
+            <Route path='/register'>
+              <UserRegisterForm />
+            </Route>
+            <Route path='/login'>
+              <LoginForm />
+            </Route>
+            <Route path='/'>
+              <Redirect to='/login' />
+            </Route>
+          </Switch>
+        }
       </Container>
     </>
   )

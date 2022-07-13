@@ -1,5 +1,6 @@
 import loginService from '../services/loginService'
 import { setNotification } from './notificationReducer'
+import { getProjects } from './projectReducer'
 
 const reducer = (state = null, action) => {
   switch(action.type) {
@@ -7,6 +8,9 @@ const reducer = (state = null, action) => {
     return action.data
   }
   case 'LOGOUT': {
+    return action.data
+  }
+  case 'LOGGED_IN_USER': {
     return action.data
   }
   default: return state
@@ -43,7 +47,22 @@ export const logout = (history) => {
       data: null
     })
     dispatch(setNotification({ message: 'You are now successfully logged out!' , type: 'success' }))
-    history.push('/')
+    history.push('/login')
+  }
+}
+
+export const getLoggedInUser = () => {
+  return async dispatch => {
+    const userInfo = window.localStorage.getItem('loggedUser')
+    let user = null
+    if (userInfo) {
+      user = JSON.parse(userInfo)
+      dispatch(getProjects(user.userId, user.token))
+    }
+    dispatch({
+      type: 'LOGGED_IN_USER',
+      data: user
+    })
   }
 }
 
