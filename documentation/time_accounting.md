@@ -20,4 +20,8 @@
 |29.06.2022|2|More tests for backend + testing with postman and corresponding fixes|
 |12.07.2022|1.5| Starting frontend for projects view, reading documentation for material ui|
 |13.07.2022|4| Continuing with frontend: List projects, add new projects, fix security issues|
+|14.07.2022|1| Finish/fix add new project form|
+||||
+||||
+||||
 |Total |33.5||

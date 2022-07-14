@@ -29,6 +29,7 @@ const validationSchema = yup.object().shape({
     .date()
     .transform((_value, originalValue) => {
       const correctDay = moment(originalValue, 'YYYY-MM-DD', true).toDate()
+      console.log(correctDay)
       return correctDay
     })
     .min(yup.ref('startDay'), 'End date must be later than the start date')
@@ -47,7 +48,9 @@ const ProjectForm = ({ handleClose }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(createProject(values.name, values.startDay, values.endDay, values.projectDescription, loggedInUser.token))
+      const endDay = moment(values.endDay).format('YYYY-MM-DD')
+      const startDay = moment(values.startDay).format('YYYY-MM-DD')
+      dispatch(createProject(values.name, startDay, endDay, values.projectDescription, loggedInUser.token))
       handleClose()
     }
   })
