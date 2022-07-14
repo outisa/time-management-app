@@ -34,7 +34,7 @@ const NewProjectModule = () => {
           <Typography id='modal-modal-title' variant='h6' component='h2'>
             Create new project
           </Typography>
-          <ProjectForm />
+          <ProjectForm handleClose={handleClose}/>
         </Box>
       </Modal>
     </>

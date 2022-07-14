@@ -14,6 +14,10 @@ const validationSchema = yup.object().shape({
     .min(7, 'Project name should be minimum of 7 charachters long.')
     .max(27, 'Project name should be maximum of 27 characters long.')
     .required('Project name is required.'),
+  projectDescription: yup
+    .string()
+    .max(2000, 'Maximum length of the project description is 2000 characters')
+    .notRequired(),
   startDay: yup
     .date()
     .transform((_value, originalValue) => {
@@ -27,23 +31,24 @@ const validationSchema = yup.object().shape({
       const correctDay = moment(originalValue, 'YYYY-MM-DD', true).toDate()
       return correctDay
     })
-    .min(yup.ref('endDay'), 'End date must be later than the start date'),
-  projectDescription: yup.string().notRequired()
+    .min(yup.ref('startDay'), 'End date must be later than the start date')
+    .required('Ending date is required'),
 })
 
-const ProjectForm = () => {
-  const user = useSelector(state => state.user)
+const ProjectForm = ({ handleClose }) => {
+  const loggedInUser = useSelector(state => state.loggedIn)
   const dispatch = useDispatch()
   const formik =  useFormik({
     initialValues: {
       name: '',
+      projectDescription: '',
       startDay: '',
-      endDay: '',
-      projectDescription: ''
+      endDay: ''
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      dispatch(createProject(values.name, values.startDay, values.endDay, values.projectDescription, user.token))
+      dispatch(createProject(values.name, values.startDay, values.endDay, values.projectDescription, loggedInUser.token))
+      handleClose()
     }
   })
   return (
@@ -53,6 +58,7 @@ const ProjectForm = () => {
           fullWidth
           id='name'
           label='Project name'
+          margin='normal'
           value={formik.values.name}
           onChange={formik.handleChange}
           error={formik.touched.name && Boolean(formik.errors.name)}
@@ -60,40 +66,61 @@ const ProjectForm = () => {
         />
         <TextField
           fullWidth
-          id='description'
+          id='projectDescription'
           label='Project description'
+          margin='normal'
           value={formik.values.projectDescription}
           onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
+          error={formik.touched.projectDescription && Boolean(formik.errors.projectDescription)}
+          helperText={formik.touched.projectDescription && formik.errors.projectDescription}
         />
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
-            id='startDate'
-            label='Start Date'
             value={formik.values.startDay}
             onChange={(value) => {
-              formik.setFieldValue('startDay', Date.parse(value))
+              formik.setFieldValue('startDay', value, true)
             }}
-            renderInput={(params) => <TextField {...params} />}
-            error={formik.touched.startDay && Boolean(formik.errors.startDay)}
-            helperText={formik.touched.startDay && formik.errors.startDay}
+            renderInput={(params) =>
+              <TextField
+                error={formik.touched.startDay && Boolean(formik.errors.startDay)}
+                helperText={formik.touched.startDay && formik.errors.startDay}
+                id='startDay'
+                label='Start Date'
+                margin='normal'
+                name='startDay'
+                variant='standard'
+                fullWidth
+                {...params}
+              />
+            }
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           <DatePicker
-            id='EndDate'
-            label='End Date'
             value={formik.values.endDay}
             onChange={(value) => {
-              formik.setFieldValue('endDay', Date.parse(value))
+              formik.setFieldValue('endDay', value, true)
             }}
-            renderInput={(params) => <TextField {...params} />}
-            error={formik.touched.endDay && Boolean(formik.errors.endDay)}
-            helperText={formik.touched.endDay && formik.errors.endDay}
+            renderInput={(params) =>
+              <TextField
+                error={formik.touched.endDay && Boolean(formik.errors.endDay)}
+                helperText={formik.touched.endDay && formik.errors.endDay}
+                id='endDay'
+                label='End Date'
+                margin='normal'
+                name='endDay'
+                variant='standard'
+                fullWidth
+                {...params}
+              />
+            }
           />
         </LocalizationProvider>
-        <Button color="primary" variant='contained' id='createProject' fullWidth type='submit'>
+        <Button
+          color='primary'
+          variant='contained'
+          id='createProject'
+          type='submit'>
           Create new project
         </Button>
       </form>
