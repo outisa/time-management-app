@@ -11,6 +11,15 @@ const getProjects = async (userId, token) => {
   }
 }
 
+const getProject = async (projectId, token) => {
+  const config = { headers: { Authorization: token } }
+  try {
+    return await axios.get(`${baseUrl}/${projectId}`, config)
+  } catch (error) {
+    return error.response.data
+  }
+}
+
 const createProject = async (name, startDay, endDay, projectDescription, token) => {
   const config = { headers: { Authorization: token } }
   const newProject = {
@@ -35,4 +44,4 @@ const deleteProject = async (id, token) => {
   }
 }
 
-export default  { getProjects, createProject, deleteProject }
+export default  { getProjects, getProject, createProject, deleteProject }

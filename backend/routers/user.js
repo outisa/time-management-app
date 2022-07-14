@@ -7,7 +7,7 @@ const { tokenExtractor } = require('../utils/tokenExtractor')
 
 userRouter.get('/accountinfo', tokenExtractor, async (req, res) => {
   const userInfo = await User.findById(req.user.id).populate('projects')
-  res.json(userInfo)
+  res.json(userInfo.toJSON())
 })
 
 userRouter.post('/login', async (request, response) => {

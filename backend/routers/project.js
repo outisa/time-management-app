@@ -4,33 +4,6 @@ const User = require('../models/user')
 const TimeMarking = require('../models/marking')
 const { tokenExtractor } = require('../utils/tokenExtractor')
 
-// NOT YET CHECKED WHETHER IT WORKS WITH MEMBERS
-router.get('/myprojects/:id', tokenExtractor, async (req, res) => {
-  if (req.user && (req.user.id === req.params.id)) {
-    const user = await User.findById(req.params.id)
-    const projectInfo = await Project
-      .find({ projectOwner: user,  'members.member': user })
-      .populate('projectOwner', { username: 1, id: 1 })
-      .populate({
-        path: 'members.user',
-        model: 'User',
-        select: { username: 1, id: 1 }
-      })
-      .populate({
-        path: 'markings.timeMarking',
-        model: 'TimeMarking',
-        populate: {
-          path: 'user',
-          model: 'User',
-          select: { username: 1, id: 1 }
-        }
-      })
-    res.send(projectInfo)
-  } else {
-    res.status(401).json({ error: 'Unauthorized' })
-  }
-})
-
 router.get('/:id', tokenExtractor, async (req, res) => {
   if (req.user) {
     const projectInfo = await Project
@@ -50,7 +23,19 @@ router.get('/:id', tokenExtractor, async (req, res) => {
           select: { username: 1, id: 1 }
         }
       })
-    res.send(projectInfo)
+    res.json(projectInfo.toJSON())
+  } else {
+    res.status(401).json({ error: 'Unauthorized' })
+  }
+})
+// NOT YET CHECKED WHETHER IT WORKS WITH MEMBERS
+router.get('/myprojects/:id', tokenExtractor, async (req, res) => {
+  if (req.user && (req.user.id === req.params.id)) {
+    const user = await User.findById(req.params.id)
+    const projects = await Project
+      .find({ projectOwner: user,  'members.member': user })
+      .populate('projectOwner', { username: 1, id: 1 })
+    res.json(projects.map(project => project.toJSON()))
   } else {
     res.status(401).json({ error: 'Unauthorized' })
   }

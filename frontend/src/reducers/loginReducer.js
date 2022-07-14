@@ -1,6 +1,6 @@
 import loginService from '../services/loginService'
 import { setNotification } from './notificationReducer'
-import { getProjects } from './projectReducer'
+import { getProjects } from './projectsReducer'
 
 const reducer = (state = null, action) => {
   switch(action.type) {

@@ -9,6 +9,7 @@ import Notification from './components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import { getLoggedInUser, logout  } from './reducers/loginReducer'
+import ProjectView from './components/project/ProjectView'
 
 const App = () => {
   const history = useHistory()
@@ -23,7 +24,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div>
       <AppBar position='static'>
         <Toolbar>
           <IconButton edge='start' color='inherit' aria-label='menu'>
@@ -54,12 +55,15 @@ const App = () => {
           }
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container sx={{ backgroundColor: '#f2f2f2' }}>
         <Notification />
         { user ?
           <Switch>
+            <Route path='/projectinfo'>
+              <ProjectView />
+            </Route>
             <Route path='/'>
-              <Home />
+              < Home />
             </Route>
           </Switch>
           :
@@ -76,7 +80,7 @@ const App = () => {
           </Switch>
         }
       </Container>
-    </>
+    </div>
   )
 }
 

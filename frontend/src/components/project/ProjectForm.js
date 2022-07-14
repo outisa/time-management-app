@@ -6,7 +6,7 @@ import moment from 'moment'
 import { Container, TextField, Button } from '@mui/material'
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
-import { createProject } from '../reducers/projectReducer'
+import { createProject } from '../../reducers/projectsReducer'
 
 const validationSchema = yup.object().shape({
   name: yup
